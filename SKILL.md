@@ -1,25 +1,40 @@
 ---
 name: bang-motion
-description: Membangun motion graphic sinematik di browser (promo video, opener, intro, bumper, kinetic typography, explainer/video penjelasan bergambar 16:9 atau 9:16) memakai HTML + CSS + GSAP (+ Three.js bila perlu), dengan hasil yang bergerak seperti video sungguhan — bukan slide presentasi. Gunakan skill ini setiap kali user meminta "video promo", "opener", "intro animasi", "motion graphic", "bumper", "kinetic typography", "animasi teks sinematik", "explainer", "video penjelasan" (jurnalisme visual, kartun edukasi, kolase), atau menunjukkan referensi video promosi/explainer dan ingin dibuatkan versi web-nya — bahkan bila mereka tidak menyebut kata "motion graphic" secara eksplisit. Juga gunakan bila user mengeluh hasil animasi web "seperti PPT/presentasi" dan ingin lebih sinematik, atau ingin merender animasi web menjadi file video MP4, atau ingin explainer kartun/animasi dibangun LANGSUNG di After Effects lewat bridge/MCP Higgsfield.
+description: Membangun motion graphic sinematik di browser (promo video, opener, intro, bumper, kinetic typography, explainer/video penjelasan bergambar 16:9 atau 9:16) memakai HTML + CSS + GSAP (+ Three.js bila perlu), dengan hasil yang bergerak seperti video sungguhan — bukan slide presentasi. Gunakan skill ini setiap kali user meminta "video promo", "opener", "intro animasi", "motion graphic", "bumper", "kinetic typography", "animasi teks sinematik", "explainer", "video penjelasan" (jurnalisme visual, kartun edukasi, kolase), atau menunjukkan referensi video promosi/explainer dan ingin dibuatkan versi web-nya — bahkan bila mereka tidak menyebut kata "motion graphic" secara eksplisit. Juga gunakan bila user mengeluh hasil animasi web "seperti PPT/presentasi" dan ingin lebih sinematik, atau ingin merender animasi web menjadi file video MP4, atau meminta hasilnya sebagai proyek Remotion (React → MP4), atau ingin explainer kartun/animasi dibangun LANGSUNG di After Effects lewat bridge/MCP Higgsfield.
 license: MIT
 metadata:
   author: Bang Tutorial
   author_url: https://youtube.com/bangtutorial
-  version: "1.19.0"
-  updated: "2026-09-14"
+  version: "1.20.0"
+  updated: "2026-09-23"
   homepage: https://github.com/bangtutorial/bang-motion
 ---
 
 # Bang Motion — motion graphic web yang bukan PPT
 
-**v1.19.0 · by [Bang Tutorial](https://youtube.com/bangtutorial) · MIT.** Riwayat perubahan di `CHANGELOG.md`;
+**v1.20.0 · by [Bang Tutorial](https://youtube.com/bangtutorial) · MIT.** Riwayat perubahan di `CHANGELOG.md`;
 cara pasang di `README.md`.
 
 Skill ini untuk AI coding agent apa pun (format Agent Skills terbuka).
 Isinya hukum dan resep untuk motion graphic yang bergerak seperti video, bukan
 presentasi — patuhi sebelum menulis kode.
 
-## Prasyarat — hanya browser
+## Target output — HTML satu-berkas (default) atau proyek Remotion
+
+| Target | Kapan | Deliverable | Butuh |
+|---|---|---|---|
+| **HTML satu-berkas** (default) | selalu, kecuali user meminta lain | `index.html` yang diklik dua kali | browser |
+| **Remotion** | user menyebut Remotion/React, sudah punya proyek Remotion, MP4 adalah deliverable utama, render server/Lambda, atau video berparameter | folder proyek dari `assets/starter-remotion/` → `npm run render` → MP4 | Node + `npm install` |
+
+Jangan pindah ke Remotion diam-diam; bila tidak jelas, masukkan pilihan ini ke
+pertanyaan langkah nol yang sama. Semua hukum, larangan struktural, style brief,
+menu konsep, dan checklist di bawah berlaku SAMA untuk kedua target — hanya mesinnya
+yang berbeda. Target Remotion: baca `references/remotion.md` (padanan perkakas
+HTML → komponen, aturan khusus, verifikasi, cara memindahkan proyek HTML). Kartun
+panggung dan starter explainer belum punya starter Remotion: bangun dengan perkakas
+`starter-remotion/src/bang/` + arsitektur dari starter HTML-nya.
+
+## Prasyarat — hanya browser (target HTML)
 
 Deliverable (`index.html`) hanya butuh browser modern + internet untuk CDN
 (GSAP, font). Python dan Node **opsional**, dipakai hanya untuk alat kerja:
@@ -354,7 +369,11 @@ bagian 1 dan 1b. Ringkasnya:
    kata, draw anotasi, push-through antar adegan) atau
    `starter-explainer.html` (aksi kontinu: dunia mengalir, hero, objek
    dunia, view peta, whip). Semua sudah autoplay + loop tanpa player. Struktur multi-file dan
-   penjelasan tiap keputusan ada di `references/architecture.md`.
+   penjelasan tiap keputusan ada di `references/architecture.md`. **Target Remotion:**
+   salin `assets/starter-remotion/` (tanpa `node_modules/`, `out/`, `snaps/`), `npm
+   install`, ganti `src/theme.ts` sesuai style brief, tulis rundown di `src/Opener.tsx`
+   — tiap adegan satu `<Sequence>`, kamera lewat `<World shots>` (lihat
+   `references/remotion.md`).
 4. **Bangun adegan satu per satu** dengan resep di
    `references/techniques.md` (split per huruf + motion blur berarah,
    pan 3D per kata, menu transisi, mockup UI). Resep adalah perkakas, bukan
@@ -368,6 +387,8 @@ bagian 1 dan 1b. Ringkasnya:
    JANGAN merender semua frame untuk mengecek — itu ribuan gambar dan bukan
    verifikasi; render penuh hanya untuk export MP4 (langkah 6) bila user
    memintanya. Tanpa Node: buka `?debug=1`, scrub manual, screenshot.
+   Target Remotion: `npm run snap` di folder proyek (renderStill per detik →
+   `snaps/sheet.png`), scrub di `npm run dev` (Remotion Studio).
 6. **Serahkan sebagai SATU `index.html` yang bisa diklik dua kali.** Output
    akhir tidak boleh butuh server/Node: CSS dan JS ditulis INLINE di dalam
    berkas (module lokal `<script type="module" src="…">` diblokir CORS saat
@@ -379,6 +400,9 @@ bagian 1 dan 1b. Ringkasnya:
    export-frames.mjs` merender tiap frame (60 fps) ke PNG lalu ffmpeg
    menggabungkannya — cara ini bebas frame drop, tapi mahal, jadi bukan
    langkah rutin dan bukan alat pengecekan.
+   **Target Remotion:** serahkan folder proyek (tanpa `node_modules/`) dan sebutkan
+   `npm install` → `npm run dev` (Studio) → `npm run render` (MP4 di `out/`).
+   Render MP4 sendiri hanya bila user memintanya.
 
 7. **Khusus explainer: naskah VO + ajakan merekam** — pesan penutup wajib
    memuat naskah VO lengkap dan meminta user merekam/generate lalu mengirim
@@ -497,6 +521,10 @@ bagian 1 dan 1b. Ringkasnya:
       fotonya di adegan itu (lihat explainer.md → "Entitas yang disebut")
 - [ ] `index.html` terbuka langsung lewat `file://` (klik dua kali) tanpa
       server — CSS/JS inline, tidak ada `src` module lokal
+- [ ] Remotion: nol CSS `transition`/`animation`/`@keyframes`, nol `Math.random()`/
+      `Date.now()`; semua gerak dari `useT()`/`useCurrentFrame()`; ukuran dari
+      `useVideoConfig()`; GSAP hanya lewat `useGsapTimeline`; `npx tsc --noEmit` bersih
+      dan `npm run snap` sudah dilihat
 - [ ] Angka yang berubah tiap frame (jam, counter) memakai
       `font-variant-numeric:tabular-nums` + `min-width` supaya wadahnya
       tidak berubah lebar
@@ -539,6 +567,8 @@ dan buat layer dari belakang ke depan. Build 10 panggung ≈ 1 jam, 0 kredit.
 | `references/architecture.md` | saat scaffold / butuh alasan di balik struktur |
 | `references/techniques.md` | saat membangun adegan & efek (termasuk ukuran shot §3b, grainy gradient §7d, menu gaya render objek §7e, dan video sebagai layer footage §9b) |
 | `references/roadmap.md` | saat mengembangkan skill ini lebih lanjut |
+| `references/remotion.md` | TARGET REMOTION: kapan dipilih, scaffold, padanan perkakas HTML → komponen, aturan khusus (frame-driven, jembatan GSAP, aset `public/`), verifikasi, memindahkan proyek HTML |
+| `assets/starter-remotion/` | titik awal proyek REMOTION: `<World>` rig kamera + shot, `<Line>` 8 pintu teks + blur berarah, `<Counter>`, `<Footage>`, lensa, `useGsapTimeline`, komposisi 16:9 + 9:16 + peraga `DoorsDemo`, `npm run snap/render`; SENGAJA tanpa adegan contoh |
 | `assets/starter-opener.html` | titik awal OPENER/promo — arsitektur + perkakas (8 pintu teks, transisi opsional); SENGAJA tanpa urutan adegan contoh, kerangka dari `opener-konsep.md` |
 | `assets/starter-explainer.html` | EXPLAINER gaya aksi kontinu (vektor): mode aliran (strip + hero + objek dunia) + view peta + whip + contoh mode kolase |
 | `assets/starter-explainer-kartun.html` | EXPLAINER kartun kolase: kertas krem + grain + noda, cutout ilustrasi, Bricolage + Caveat, pill warna |

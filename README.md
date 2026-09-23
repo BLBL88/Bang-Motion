@@ -5,9 +5,9 @@
 # Bang Motion
 
 **An agent skill that turns your AI coding agent into a motion designer.**<br>
-Openers, promos, product demos, kinetic typography, and explainers — built as a single `index.html` that plays like video, not like slides.
+Openers, promos, product demos, kinetic typography, and explainers — built as a single `index.html` — or a **Remotion** project rendered to MP4 — that plays like video, not like slides.
 
-[![Version](https://img.shields.io/badge/version-1.19.0-2f6fd6?style=flat-square)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.20.0-2f6fd6?style=flat-square)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3fa34d?style=flat-square)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/format-Agent%20Skills-1c2a4a?style=flat-square)](#install)
 [![Works with](https://img.shields.io/badge/works%20with-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Gemini%20CLI%20%C2%B7%20Cursor-7a5af5?style=flat-square)](#install)
@@ -38,7 +38,14 @@ It also stops every project from looking the same. The look is **derived from yo
 | 🎥 **Video layers** | your own or generated clips placed like footage — inside devices, frames, and masks, locked to the timeline | — |
 | 🎞️ **After Effects builds** | cartoon explainers built directly inside AE through the Higgsfield MCP bridge | — |
 
-Every deliverable is one `index.html`: double-click to play, autoplay + loop, `?debug=1` for a scrub bar, and an optional frame-by-frame export to MP4.
+Pick the output that fits:
+
+| Output | What you get | You need |
+|---|---|---|
+| **Single HTML** (default) | one `index.html`: double-click to play, autoplay + loop, `?debug=1` for a scrub bar, optional frame-by-frame MP4 export | a browser |
+| **Remotion project** | a React + TypeScript project with the same camera rig, text doors, motion blur, counters, and footage layers as components — preview in Remotion Studio, render to MP4 with one command | Node |
+
+Just say *"as a Remotion project"* in your prompt. The same anti-slide rules, style brief, and concept menu apply to both.
 
 ## Style gallery
 
@@ -141,8 +148,8 @@ flowchart LR
   A[Brief<br>product, logo, audience,<br>length, ratio] --> B[Style brief<br>3 concept candidates,<br>palette with sources]
   B --> C{You approve}
   C --> D[Assets<br>your photos & logo<br>or generated via MCP]
-  D --> E[Build<br>index.html]
-  E --> F[Verify frames<br>snap.mjs / ?debug=1]
+  D --> E[Build<br>index.html or<br>Remotion project]
+  E --> F[Verify frames<br>snap / ?debug=1 / Studio]
   F --> G[Your feedback]
   G --> E
   G --> H[Deliver<br>HTML · MP4 · voice-over sync]
@@ -151,9 +158,9 @@ flowchart LR
 1. **Brief the agent.** Name the product, attach the logo or site, say who it is for, the length, and the ratio. Mention a style if you have one in mind — the name is enough.
 2. **Approve the style brief.** The agent answers with three concept candidates, one recommendation, a structure fingerprint, and a palette where every color states its source. Change anything before a line of code is written.
 3. **Settle the assets.** Your own photos and logo come first. If you have none, the agent can generate them through an image MCP (fictional faces, logos added in code) — or pick a concept that needs no photos.
-4. **Let it build.** You get one `index.html`. The agent captures key seconds and checks them against the rules before handing over.
-5. **Review and iterate.** Open it, scrub with `?debug=1`, and describe what feels off. Feedback lands on the same file.
-6. **Deliver.** Keep the HTML, export MP4 with `scripts/export-frames.mjs`, or send a voice-over and the timeline re-times itself to it.
+4. **Let it build.** You get one `index.html` (or a Remotion project, if you asked for one). The agent captures key seconds and checks them against the rules before handing over.
+5. **Review and iterate.** Open it, scrub with `?debug=1` (Remotion: `npm run dev` opens Studio), and describe what feels off. Feedback lands on the same file.
+6. **Deliver.** Keep the HTML, export MP4 with `scripts/export-frames.mjs` (Remotion: `npm run render`), or send a voice-over and the timeline re-times itself to it.
 
 > **Tip:** start each new video in a **new chat**. The skill is read when it is first invoked, and a long chat keeps earlier decisions in context.
 
@@ -176,6 +183,9 @@ Explain how a container port works in 60 seconds, visual journalism style, no vo
 ```
 ```text
 Promo for our editing app with a screen recording playing inside a laptop mockup, 30 seconds. Clip attached.
+```
+```text
+A 20-second launch bumper for our API as a Remotion project, 16:9 and 9:16, render to MP4.
 ```
 ```text
 A cartoon explainer on why volcanoes erupt, for kids, 9:16, I will send a voice-over later.
@@ -231,8 +241,9 @@ The skill triggers on requests like "make an opener…", "promo video…", "expl
 | Use video clips | MP4 (H.264) or WebM files in `assets/` — optional |
 | Generate images | any image MCP the agent can call — optional |
 | Build in After Effects | After Effects + the Higgsfield MCP bridge — optional |
+| Output a Remotion project | Node 18+ and `npm install` in the project (Remotion 4, React 19). ffmpeg ships with Remotion. Check [Remotion's license](https://www.remotion.dev/license) for company use — optional |
 
-A deliverable never needs `npm install` to be watched.
+An HTML deliverable never needs `npm install` to be watched.
 
 ## How the rules work
 
@@ -244,6 +255,7 @@ A deliverable never needs `npm install` to be watched.
 - **Video as footage layers** — clips follow the timeline clock, so scrubbing and MP4 export stay frame-accurate.
 - **A camera that works** — breathing drift, motivated push-throughs, and in UI demos a camera that follows the important clicks.
 - **Structural anti-slide checks** — no fading sections, a persistent subject or world, at most two text levels, varied transitions with real depth.
+- **Same rules in Remotion** — every motion is a function of the current frame (no CSS animations, no randomness), scenes are `<Sequence>`s in rundown seconds, GSAP recipes run through a seeked timeline bridge.
 - **Readable on phones** — no text under 30 px on a 1080-wide stage.
 
 Full detail lives in `SKILL.md` and `references/`.
@@ -260,11 +272,14 @@ references/
   explainer.md                   explainer styles, camera recipes, VO re-timing
   kartun-panggung.md             cartoon stage explainers
   architecture.md                stage, camera rig, determinism, export
+  remotion.md                    Remotion target: when, HTML → component mapping, rules
   ae-bridge-higgsfield.md        building inside After Effects via the MCP bridge
   roadmap.md                     where the skill is heading
 assets/
   starter-opener.html            opener / promo architecture (GSAP + Three.js)
   starter-explainer*.html        one starter per explainer style
+  starter-remotion/              Remotion project: <World>, <Line>, <Counter>, <Footage>,
+                                 lens, GSAP bridge, 16:9 + 9:16, npm run snap / render
 scripts/
   snap.mjs                       verify: capture key seconds
   export-frames.mjs              export: frame-by-frame PNG → MP4
@@ -279,7 +294,13 @@ docs/gallery/                    README preview images
 <details>
 <summary><b>Is the output a video file?</b></summary>
 
-The deliverable is an `index.html` that plays like a video: autoplay, loop, no player chrome. When you need a file, `scripts/export-frames.mjs` renders it frame by frame to MP4.
+The deliverable is an `index.html` that plays like a video: autoplay, loop, no player chrome. When you need a file, `scripts/export-frames.mjs` renders it frame by frame to MP4. If you ask for a Remotion project instead, `npm run render` produces the MP4 directly.
+</details>
+
+<details>
+<summary><b>Can it output a Remotion project?</b></summary>
+
+Yes. Ask for Remotion and the agent starts from `assets/starter-remotion/`: the same camera rig with shot sizes, eight text entrances/exits with directional motion blur, live counters, footage layers, light leak, vignette, and grain — as React components driven by the frame. Run `npm install`, `npm run dev` to preview in Remotion Studio, and `npm run render` for the MP4 (`render:vertical` for 9:16). Existing HTML projects can be moved over; `references/remotion.md` maps every helper to its component.
 </details>
 
 <details>

@@ -1,0 +1,30 @@
+{
+  "name": "bang-motion-remotion",
+  "private": true,
+  "version": "1.20.0",
+  "description": "Bang Motion starter for Remotion — same camera rig, text doors, footage and determinism rules, rendered to MP4 by Remotion.",
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Opener out/opener.mp4",
+    "render:vertical": "remotion render OpenerVertical out/opener-9x16.mp4",
+    "demo": "remotion render DoorsDemo out/doors-demo.mp4",
+    "snap": "node scripts/snap.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.527",
+    "@remotion/cli": "4.0.527",
+    "@remotion/google-fonts": "4.0.527",
+    "@remotion/media": "4.0.527",
+    "@remotion/renderer": "4.0.527",
+    "gsap": "^3.15.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "remotion": "4.0.527"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "typescript": "^5.9.0"
+  }
+}

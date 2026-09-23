@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.20.0 — 2026-09-23
+
+**Remotion sebagai target output kedua**
+- Selain `index.html` satu-berkas (tetap default), skill kini bisa menyerahkan proyek Remotion
+  yang dirender ke MP4 (`assets/starter-remotion/`, Remotion 4 + React 19 + TypeScript).
+- Perkakas yang sama dalam bentuk komponen: `<World shots>` (rig kamera + ukuran shot + klem
+  tepi + napas), `<Line>` 8 pintu teks masuk/keluar dengan motion blur berarah, `<Counter>`,
+  `<Footage>` (padanan `clip()`), `<LightLeak>`/`<Vignette>`/`<Grain>`, tween detik absolut
+  dengan ease bernama GSAP, dan `useGsapTimeline()` untuk memakai resep GSAP apa adanya.
+- Komposisi 16:9 dan 9:16 dari satu komponen, peraga `DoorsDemo`, `npm run snap` (potret detik
+  kunci + lembar kontak) dan `npm run render`.
+- Panduan kapan memilih Remotion, padanan HTML → Remotion, aturan khusus, dan cara memindahkan
+  proyek HTML yang sudah jadi (`references/remotion.md`).
+
 ## 1.19.0 — 2026-09-15
 
 **Ukuran shot — kamera ke elemen**
