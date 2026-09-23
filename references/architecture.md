@@ -186,3 +186,26 @@ DISERAHKAN adalah satu `index.html` yang bisa diklik dua kali:
 Proses inline yang aman: baca css & js, ganti tag `<link>`/`<script src>`
 dengan isinya, pastikan JS tidak mengandung `</script>`, lalu hapus folder
 sumbernya supaya tidak ada dua kebenaran.
+
+## Target Remotion — arsitektur yang sama, mesin lain
+
+Bila user memilih Remotion (`SKILL.md` → "Target output"), struktur di atas
+dipetakan satu-satu; detail lengkap di `references/remotion.md`.
+
+| HTML satu-berkas | Remotion (`assets/starter-remotion/`) |
+|---|---|
+| `#stage` 1920×1080 di-scale | `<Composition width height>`; ukuran dibaca dari `useVideoConfig()` |
+| rig `#world` + `applyCam()` | `<World shots>` — transform dihitung dari frame, klem tepi + napas |
+| timeline GSAP, detik absolut | `useT()` + `tw`/`keys` (detik absolut); adegan = `<Sequence from={T*fps}>` |
+| state awal di CSS | state awal = nilai fungsi di `t` sebelum `at` (tidak ada flash) |
+| WebGL ber-state dari `tl.time()` | `@remotion/three` `<ThreeCanvas>` dengan state dari `t` |
+| determinisme (daftar larangan) | sama, plus: nol CSS `transition`/`animation` — tiap frame dirender di tab terpisah |
+| `snap.mjs` (puppeteer) | `npm run snap` (`renderStill` per detik) |
+| `export-frames.mjs` + ffmpeg | `npm run render` (render paralel, encode bawaan) |
+| `?debug=1` | Remotion Studio (`npm run dev`) |
+| deliverable `index.html` | deliverable folder proyek; penonton butuh MP4 hasil render |
+
+Alasan memisahkan starter (bukan menulis ulang starter HTML jadi React
+otomatis): deliverable HTML harus tetap tanpa instal, sedangkan Remotion justru
+unggul di render terkontrol. Keduanya memakai HUKUM yang sama; hanya perkakasnya
+yang dikemas sesuai mesin.

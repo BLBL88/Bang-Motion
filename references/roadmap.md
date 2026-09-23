@@ -65,7 +65,8 @@ warna, brand, atau kalimat spesifik proyek asalnya.
   contoh kegagalannya. Aturan tanpa cerita akan dilanggar oleh model berikutnya.
 - **Mengunci ke satu library.** GSAP + Three.js adalah pilihan default,
   bukan identitas. Prinsipnya (kamera, determinisme, anti-PPT) berlaku juga
-  untuk Remotion, Motion One, atau canvas murni.
+  untuk Remotion, Motion One, atau canvas murni. (Remotion kini target kedua
+  resmi — `references/remotion.md` — dengan perkakas yang sama, bukan fork gaya.)
 
 ## Cara memakai skill ini di AI lain
 
@@ -83,3 +84,6 @@ dan berikan `starter-opener.html` sebagai titik awal kode.
   berikutnya: `assets/starter-explainer.html` (stage 9:16, helper
   say/unsay/photo/draw/cut/tint, syncAudio) supaya tidak menulis ulang.
 - Deliverable satu berkas tanpa server; `seek()` sinkron; angka tabular.
+- Target output kedua: proyek Remotion (`assets/starter-remotion/`,
+  `references/remotion.md`) — kandidat berikutnya: starter explainer & kartun
+  panggung versi Remotion, `<TransitionSeries>` dari menu transisi §4c.
